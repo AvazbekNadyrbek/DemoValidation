@@ -18,43 +18,30 @@ struct NewDriverLicenseForm {
     var state: String = ""
     var zipCode: String = ""
     
-    var errorMessages: [String] = []
+    var errorMessages: [NewDriverLicensFromError] = []
     
     mutating func validate() -> Bool {
         
         errorMessages.removeAll()
         
         if firtsName.isEmptyOrWhitespace {
-            errorMessages.append("First Name cannot be empty")
+            errorMessages.append(.firstName)
         }
         
         if lastName.isEmptyOrWhitespace {
-            errorMessages.append("Last Name cannot be empty")
+            errorMessages.append(.secondName)
         }
         
-        if ssn.isEmptyOrWhitespace {
-            errorMessages.append("SSN cannot be empty")
+        if ssn.isEmptyOrWhitespace || !ssn.isSSN {
+            errorMessages.append(.ssn)
         }
-        
-        if !ssn.isSSN {
-            errorMessages.append("SSN is not valid format")
-        }
+      
         
         return errorMessages.isEmpty
     }
     
 }
 
-struct ValidationSummaryView: View {
-    
-    let errorMessages: [String]
-    
-    var body: some View {
-        ForEach(errorMessages, id: \.self) { errorMessages in
-            Text(errorMessages)
-        }
-    }
-}
 
 struct NewDriverLicenseScreenView: View {
     
@@ -82,6 +69,11 @@ struct NewDriverLicenseScreenView: View {
     }
 }
 
-#Preview {
+#Preview("Englisch") {
     NewDriverLicenseScreenView()
+}
+
+#Preview("German") {
+    NewDriverLicenseScreenView()
+        .environment(\.locale, Locale(identifier: "de"))
 }

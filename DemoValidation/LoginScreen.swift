@@ -22,7 +22,7 @@ struct LoginScreen: View {
     var body: some View {
         Form {
             TextField("Enter username", text: $username)
-            SecureField("Enter a passwird", text: $password)
+            SecureField("Enter a password", text: $password)
             Button {
                 print(username)
             } label: {
